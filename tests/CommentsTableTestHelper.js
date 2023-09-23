@@ -19,7 +19,7 @@ const CommentsTableTestHelper = {
 
   async findCommentsById(id) {
     const query = {
-      text: 'SELECT * FROM comments WHERE id = $1 AND is_deleted = FALSE',
+      text: 'SELECT * FROM comments WHERE id = $1 AND is_delete = FALSE',
       values: [id],
     };
 
@@ -30,7 +30,7 @@ const CommentsTableTestHelper = {
 
   async deleteCommentById(commentId) {
     const query = {
-      text: 'UPDATE comments SET is_deleted = TRUE WHERE id = $1',
+      text: 'UPDATE comments SET is_delete = TRUE WHERE id = $1',
       values: [commentId],
     };
     await pool.query(query);

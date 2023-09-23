@@ -1,12 +1,12 @@
 class ThreadComment {
   constructor(payload) {
     this._verifyPayload(payload);
-    const { id, username, date, content, is_deleted } = payload;
+    const { id, username, date, content, is_delete } = payload;
 
     this.id = id;
     this.username = username;
     this.date = date;
-    this.content = this._checkContent(content, is_deleted);
+    this.content = this._checkContent(content, is_delete);
   }
 
   _verifyPayload({ id, username, date, content }) {
@@ -23,8 +23,8 @@ class ThreadComment {
     }
   }
 
-  _checkContent(content, is_deleted) {
-    return is_deleted ? '**komentar telah dihapus**' : content;
+  _checkContent(content, is_delete) {
+    return is_delete ? '**komentar telah dihapus**' : content;
   }
 }
 module.exports = ThreadComment;

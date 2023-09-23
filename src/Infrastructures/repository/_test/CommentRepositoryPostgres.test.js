@@ -269,14 +269,14 @@ describe('CommentRepositoryPostgres', () => {
         username: 'ownerComment',
         content: 'A Comment',
         date: expect.any(String),
-        is_deleted: false,
+        is_delete: false,
       });
       expect(comments[1]).toStrictEqual({
         id: 'comment-456',
         username: 'ownerDeletedComment',
         content: 'A Comment',
         date: expect.any(String),
-        is_deleted: true,
+        is_delete: true,
       });
     });
   });

@@ -35,7 +35,7 @@ describe('a ThreadComment entities', () => {
       username: 'dicoding',
       date: '2023-09-23T07:59:57.000Z',
       content: 'sebuah comment',
-      is_deleted: false,
+      is_delete: false,
     };
 
     // Action
@@ -48,14 +48,14 @@ describe('a ThreadComment entities', () => {
     expect(threadComment.content).toEqual(payload.content);
   });
 
-  it('should create threadComment object correctly when is_deleted is true', () => {
+  it('should create threadComment object correctly when is_delete is true', () => {
     // Arrange
     const payload = {
       id: 'comment-123',
       username: 'dicoding',
       date: '2023-09-23T07:59:57.000Z',
       content: 'sebuah comment',
-      is_deleted: true,
+      is_delete: true,
     };
 
     // Action

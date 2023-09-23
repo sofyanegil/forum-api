@@ -38,14 +38,14 @@ describe('GetThreadByIdUseCase', () => {
           username: 'dicoding',
           date: '2021-08-08T07:59:57.000Z',
           content: 'sebuah comment',
-          is_deleted: false,
+          is_delete: false,
         },
         {
           id: 'comment-456',
           username: 'user',
           date: '2021-08-08T07:59:57.000Z',
           content: 'sebuah comment',
-          is_deleted: true,
+          is_delete: true,
         },
       ])
     );

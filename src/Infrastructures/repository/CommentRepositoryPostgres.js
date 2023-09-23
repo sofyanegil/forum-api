@@ -26,7 +26,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async verifyAvailableComment(commentId) {
     const query = {
-      text: 'SELECT id FROM comments WHERE id = $1 AND is_deleted = FALSE',
+      text: 'SELECT id FROM comments WHERE id = $1 AND is_delete = FALSE',
       values: [commentId],
     };
 
@@ -54,7 +54,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     const deletedAt = new Date().toISOString();
 
     const query = {
-      text: 'UPDATE comments SET is_deleted = TRUE, deleted_at = $2 WHERE id = $1 RETURNING id',
+      text: 'UPDATE comments SET is_delete = TRUE, deleted_at = $2 WHERE id = $1 RETURNING id',
       values: [commentId, deletedAt],
     };
 
@@ -63,7 +63,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async getCommentByThreadId(threadId) {
     const query = {
-      text: `SELECT comments.id, users.username, comments.content, comments.date, comments.is_deleted
+      text: `SELECT comments.id, users.username, comments.content, comments.date, comments.is_delete
       FROM comments
       LEFT JOIN users ON comments.owner = users.id
       WHERE comments.thread_id = $1
