@@ -1,13 +1,13 @@
 /* eslint-disable max-len */
 /* istanbul ignore file */
 const ServerTestHelper = {
-  async registerAndGetToken(server) {
+  async registerAndGetToken(server, { username = 'dicoding' }) {
     const userPayload = {
-      username: 'testuser',
+      username,
       password: 'secret',
     };
 
-    await server.inject({
+    const responseRegister = await server.inject({
       method: 'POST',
       url: '/users',
       payload: {
@@ -15,6 +15,9 @@ const ServerTestHelper = {
         fullname: 'fullname',
       },
     });
+
+    const responseRegisterJSON = JSON.parse(responseRegister.payload);
+    const { id } = responseRegisterJSON.data.addedUser;
 
     const responseAuth = await server.inject({
       method: 'POST',
@@ -24,7 +27,7 @@ const ServerTestHelper = {
 
     const responseAuthJSON = JSON.parse(responseAuth.payload);
     const { accessToken } = responseAuthJSON.data;
-    return { accessToken };
+    return { accessToken, id };
   },
 };
 

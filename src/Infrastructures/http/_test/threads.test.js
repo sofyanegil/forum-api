@@ -42,7 +42,9 @@ describe('/threads endpoint', () => {
 
       beforeEach(async () => {
         const server = await createServer(container);
-        const result = await ServerTestHelper.registerAndGetToken(server);
+        const result = await ServerTestHelper.registerAndGetToken(server, {
+          username: 'dicoding',
+        });
         accessToken = result.accessToken;
       });
 
