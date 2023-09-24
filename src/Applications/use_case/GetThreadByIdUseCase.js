@@ -13,7 +13,7 @@ class GetThreadByIdUseCase {
     const { threadId } = useCasePayload;
     await this._threadRepository.verifyAvailableThread(threadId);
     const threadQuery = await this._threadRepository.getThreadById(threadId);
-    const commentsQuery = await this._commentRepository.getCommentByThreadId(
+    const commentsQuery = await this._commentRepository.getCommentsByThreadId(
       threadId
     );
 

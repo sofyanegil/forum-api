@@ -210,7 +210,7 @@ describe('CommentRepositoryPostgres', () => {
     });
   });
 
-  describe('getCommentByThreadId function', () => {
+  describe('getCommentsByThreadId function', () => {
     afterEach(async () => {
       await CommentsTableTestHelper.cleanTable();
       await ThreadsTableTestHelper.cleanTable();
@@ -252,7 +252,7 @@ describe('CommentRepositoryPostgres', () => {
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action
-      const comments = await commentRepositoryPostgres.getCommentByThreadId(
+      const comments = await commentRepositoryPostgres.getCommentsByThreadId(
         'thread-123'
       );
 

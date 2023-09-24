@@ -247,4 +247,69 @@ describe('ReplyRepositoryPostgres', () => {
       expect(replies).toHaveLength(0);
     });
   });
+
+  describe('getRepliesByCommentId function', () => {
+    afterEach(async () => {
+      await RepliesTableTestHelper.cleanTable();
+      await CommentsTableTestHelper.cleanTable();
+      await ThreadsTableTestHelper.cleanTable();
+      await UsersTableTestHelper.cleanTable();
+    });
+
+    it('should return replies by comment id', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+        username: 'ownerThread',
+      });
+      await UsersTableTestHelper.addUser({
+        id: 'user-456',
+        username: 'ownerComment',
+      });
+      await ThreadsTableTestHelper.addThread({
+        id: 'thread-123',
+        owner: 'user-123',
+      });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        threadId: 'thread-123',
+        owner: 'user-456',
+      });
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-123',
+        commentId: 'comment-123',
+        owner: 'user-123',
+      });
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-456',
+        commentId: 'comment-123',
+        owner: 'user-456',
+      });
+      await RepliesTableTestHelper.deleteReplyById('reply-456');
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      // Action
+      const replies = await replyRepositoryPostgres.getRepliesByCommentId(
+        'comment-123'
+      );
+
+      // Assert
+      expect(replies).toHaveLength(2);
+      expect(replies[0]).toStrictEqual({
+        id: 'reply-123',
+        content: 'A Reply',
+        date: expect.any(String),
+        username: 'ownerThread',
+        is_delete: false,
+      });
+
+      expect(replies[1]).toStrictEqual({
+        id: 'reply-456',
+        content: 'A Reply',
+        date: expect.any(String),
+        username: 'ownerComment',
+        is_delete: true,
+      });
+    });
+  });
 });

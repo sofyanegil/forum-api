@@ -4,6 +4,9 @@ const GetThreadByIdUseCase = require('../GetThreadByIdUseCase');
 const CommentRepository = require('../../../Domains/comments/CommentRepository');
 const ThreadRepository = require('../../../Domains/threads/ThreadRepository');
 const ReplyRepository = require('../../../Domains/replies/ReplyRepository');
+const DetailThread = require('../../../Domains/threads/entities/DetailThread');
+const ThreadComment = require('../../../Domains/comments/entities/ThreadComment');
+const CommentReply = require('../../../Domains/replies/entities/CommentReply');
 
 describe('GetThreadByIdUseCase', () => {
   it('should orchestrating the get thread by id action correctly', async () => {
@@ -11,6 +14,32 @@ describe('GetThreadByIdUseCase', () => {
     const useCasePayload = {
       threadId: 'thread-123',
     };
+
+    const expectedDetailThread = new DetailThread({
+      id: 'thread-123',
+      title: 'A Thread',
+      body: 'A Body of Thread',
+      date: '2021-08-08T07:59:57.000Z',
+      username: 'user-123',
+      comments: [
+        new ThreadComment({
+          id: 'comment-123',
+          username: 'dicoding',
+          content: 'sebuah komentar',
+          date: '2021-08-08T07:59:57.000Z',
+          is_delete: false,
+          replies: [
+            new CommentReply({
+              id: 'reply-123',
+              username: 'dicoding',
+              date: '2021-08-08T07:59:57.000Z',
+              content: 'sebuah balasan',
+              is_delete: true,
+            }),
+          ],
+        }),
+      ],
+    });
 
     /** creating dependency of use case */
     const mockCommentRepository = new CommentRepository();
@@ -27,21 +56,16 @@ describe('GetThreadByIdUseCase', () => {
         username: 'user-123',
       })
     );
-    mockCommentRepository.getCommentByThreadId = jest
+    mockCommentRepository.getCommentsByThreadId = jest
       .fn()
       .mockImplementation(() =>
         Promise.resolve([
           {
             id: 'comment-123',
             username: 'dicoding',
+            content: 'sebuah komentar',
             date: '2021-08-08T07:59:57.000Z',
-            content: 'sebuah comment',
-          },
-          {
-            id: 'comment-456',
-            username: 'user',
-            date: '2021-08-08T07:59:57.000Z',
-            content: '**komentar telah dihapus**',
+            is_delete: false,
           },
         ])
       );
@@ -54,6 +78,7 @@ describe('GetThreadByIdUseCase', () => {
             username: 'dicoding',
             date: '2021-08-08T07:59:57.000Z',
             content: 'sebuah balasan',
+            is_delete: true,
           },
         ])
       );
@@ -66,9 +91,10 @@ describe('GetThreadByIdUseCase', () => {
     });
 
     // Action
-    await getThreadByIdUseCase.execute(useCasePayload);
+    const detailThread = await getThreadByIdUseCase.execute(useCasePayload);
 
     // Assert
+    expect(detailThread).toStrictEqual(expectedDetailThread);
     expect(mockThreadRepository.verifyAvailableThread).toBeCalledWith(
       useCasePayload.threadId
     );
@@ -76,7 +102,7 @@ describe('GetThreadByIdUseCase', () => {
       useCasePayload.threadId
     );
 
-    expect(mockCommentRepository.getCommentByThreadId).toBeCalledWith(
+    expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(
       useCasePayload.threadId
     );
 
