@@ -141,6 +141,11 @@ describe('CommentRepositoryPostgres', () => {
         owner: 'user-123',
         id: 'thread-123',
       });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        owner: 'user-456',
+        thread_id: 'thread-123',
+      });
     });
     afterEach(async () => {
       await CommentsTableTestHelper.cleanTable();
@@ -150,11 +155,6 @@ describe('CommentRepositoryPostgres', () => {
 
     it('should throw AuthorizationError when ownerComment not match', async () => {
       // Arrange
-      await CommentsTableTestHelper.addComment({
-        id: 'comment-123',
-        owner: 'user-456',
-        thread_id: 'thread-123',
-      });
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action & Assert
@@ -165,12 +165,6 @@ describe('CommentRepositoryPostgres', () => {
 
     it('should not throw AuthorizationError when ownerComment match', async () => {
       // Arrange
-      await CommentsTableTestHelper.addComment({
-        id: 'comment-123',
-        owner: 'user-456',
-        thread_id: 'thread-123',
-      });
-
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action & Assert
