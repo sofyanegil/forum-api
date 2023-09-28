@@ -1,13 +1,22 @@
 class ThreadComment {
   constructor(payload) {
     this._verifyPayload(payload);
-    const { id, username, date, content, is_delete, replies = [] } = payload;
+    const {
+      id,
+      username,
+      date,
+      content,
+      is_delete,
+      replies = [],
+      likeCount = 0,
+    } = payload;
 
     this.id = id;
     this.username = username;
     this.date = date;
     this.content = this._checkContent(content, is_delete);
     this.replies = replies;
+    this.likeCount = likeCount;
   }
 
   _verifyPayload({ id, username, date, content }) {
