@@ -144,6 +144,24 @@ describe('DomainErrorTranslator', () => {
         'tidak dapat menghapus reply karena tipe data tidak sesuai'
       )
     );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error('LIKE_COMMENT.NOT_CONTAIN_NEEDED_PROPERTY')
+      )
+    ).toStrictEqual(
+      new InvariantError(
+        'tidak dapat memberikan like pada comment karena properti yang dibutuhkan tidak ada'
+      )
+    );
+    expect(
+      DomainErrorTranslator.translate(
+        new Error('LIKE_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION')
+      )
+    ).toStrictEqual(
+      new InvariantError(
+        'tidak dapat memberikan like pada comment karena tipe data tidak sesuai'
+      )
+    );
   });
 
   it('should return original error when error message is not needed to translate', () => {
