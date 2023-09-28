@@ -7,6 +7,7 @@ const authentications = require('../../Interfaces/http/api/authentications');
 const threads = require('../../Interfaces/http/api/threads');
 const comments = require('../../Interfaces/http/api/comments');
 const replies = require('../../Interfaces/http/api/replies');
+const likeComments = require('../../Interfaces/http/api/likeComments');
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -58,6 +59,10 @@ const createServer = async (container) => {
       plugin: replies,
       options: { container },
     },
+    {
+      plugin: likeComments,
+      options: { container },
+    },
   ]);
 
   server.route([
@@ -99,7 +104,7 @@ const createServer = async (container) => {
         message: 'terjadi kegagalan pada server kami',
       });
       newResponse.code(500);
-      // console.error(translatedError);
+      console.error(translatedError);
       return newResponse;
     }
 
