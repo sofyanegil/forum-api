@@ -14,9 +14,7 @@ const createServer = async (container) => {
     host: process.env.HOST,
     port: process.env.PORT,
     routes: {
-      cors: {
-        origin: ['*'],
-      },
+      cors: { origin: ['*'] },
     },
   });
 
